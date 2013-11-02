@@ -8,19 +8,14 @@
 	using namespace std;
 #include <fstream>
 	using namespace std;
-vector<string> faktai;
-string tikslas;
-vector<string> taisykles;
-string taisykle;
-string faktas;
+#include "algorithm.h" 
 
-void atskirti_fakta_dalimis(string);
+
 void spausdinti();
 bool ivesti();
 void remove_carriage_return(string&);
-void atskirti_taisykle(string&);
-void rasti_kelia();
-void remove_comment(string& line);
+
+void remove_comment_and_spaces(string& line);
 
 int main( int argc, const char* argv[] )
 {
@@ -33,11 +28,7 @@ int main( int argc, const char* argv[] )
 	cout << "Programa baigia darba\n";
 }
 
-void rasti_kelia(){
-
-}
-
-void remove_comment(string& line){
+void remove_comment_and_spaces(string& line){
 	
 	string delimiters = " \t";
 
@@ -57,7 +48,6 @@ void remove_comment(string& line){
 	if ( (pos = new_line.find_first_of("//") ) != string::npos){
 		new_line = new_line.substr( 0, pos );
 	}
-	cout << "galutinis rez(" << new_line <<")"<<endl;
 	line = new_line;
 }
 
@@ -69,35 +59,11 @@ void remove_carriage_return(std::string& line)
     }
 }
 
-void atskirti_fakta_dalimis(string faktas){
-	string token;
-	size_t pos = 0;
-	while ((pos = faktas.find(" ")) != std::string::npos) {
-		token = faktas.substr(0, pos);
-		faktai.push_back(token);
-		faktas.erase(0, faktas.find(" ") + 1);
-	}
-	faktai.push_back(faktas);//ikeliame paskutini fakta 
-}
-
-void atskirti_taisykle(string& taisykle){
-	string nauja_taisykle;
-	string token;
-	size_t pos = 0;
-	while ((pos = taisykle.find(" ")) != std::string::npos) {
-		token = taisykle.substr(0, pos);
-		nauja_taisykle.append(token);
-		taisykle.erase(0, taisykle.find(" ") + 1);
-	}
-	nauja_taisykle.append(taisykle);//ikeliame paskutini fakta 
-	taisykle = nauja_taisykle;//taisykles
-}
-
 void spausdinti(){
 	cout << "Duomenys is failo:" << endl;
 	int ilgis = 0;
 	for (int i = 0; i < taisykles.size(); i++){
-		atskirti_taisykle(taisykles[i]);
+		//atskirti_taisykle(taisykles[i]);
 	}
 	for (int i = 0; i < taisykles.size(); i++){
 		if ( ilgis < taisykles[i].length() )
@@ -125,7 +91,6 @@ void spausdinti(){
 		cout << "-> " << taisykles[i][0];
 		cout << endl;
 	} 
-	atskirti_fakta_dalimis(faktas);
 	cout << "\n  Pradiniai faktai \n";
 	cout << "    ";
 	for (int i = 0; i < faktai.size(); i++){
@@ -149,7 +114,7 @@ bool ivesti(){
 		while ( !baigta ){
 			getline( duomenys, line );
 			remove_carriage_return(line);
-			remove_comment(line);	
+			remove_comment_and_spaces(line);	
 			if ( !line.empty() )
 				taisykles.push_back(line);
 			else
@@ -160,14 +125,20 @@ bool ivesti(){
 		while ( !baigta ){
 			getline( duomenys, line );
 			remove_carriage_return(line);
+			remove_comment_and_spaces(line);
 			if (!line.empty())
-				faktas+=line;
+				for ( int i = 0; i < line.length(); i++) {
+					faktai.push_back(line[i]);
+
+				}
 			else
 				baigta = true;
 		}
 
 		//cout << "Tikslas \n";
 		getline( duomenys, tikslas);
+		remove_carriage_return(tikslas);
+		remove_comment_and_spaces(tikslas);
 	    duomenys.close();
 	    return true;
  	}
