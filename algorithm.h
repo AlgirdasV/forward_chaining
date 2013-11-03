@@ -5,7 +5,9 @@
 #include <string>
 
 void rasti_kelia();
-void pradiniai_testai();
+bool tikslas_pasiekiamas();
+void vykdyti_produkcija(int, bool& );
+bool ar_tikslas_pasiektas();
 
 extern std::vector<char> faktai;
 extern std::string tikslas;

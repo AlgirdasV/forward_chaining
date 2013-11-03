@@ -21,8 +21,8 @@ int main( int argc, const char* argv[] )
 {
 	cout << "Programa pradeda darba\n\n";
 	if ( ivesti() ){
-		rasti_kelia();
 		spausdinti();
+		rasti_kelia();
 	}
 		
 	cout << "Programa baigia darba\n";
@@ -99,7 +99,7 @@ void spausdinti(){
 		else 
 			cout << faktai[i] << ", ";
 	} 
-	cout << "\n\n  Tikslas \n" << "    " << tikslas << endl;
+	cout << "\n\n  Tikslas \n" << "    " << tikslas << "\n\n";
 }
 
 bool ivesti(){
