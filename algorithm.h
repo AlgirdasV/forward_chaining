@@ -8,7 +8,8 @@ void rasti_kelia();
 bool tikslas_pasiekiamas();
 void vykdyti_produkcija(int, bool& );
 bool ar_tikslas_pasiektas();
-void spausdinti_kelia();
+void spausdinti_plana();
+void spausdinti_busena();
 
 extern std::vector<char> faktai;
 extern std::string tikslas;

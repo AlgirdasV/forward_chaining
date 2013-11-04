@@ -60,7 +60,7 @@ void remove_carriage_return(std::string& line)
 }
 
 void spausdinti(){
-	cout << "Duomenys is failo:" << endl;
+	cout << "1)Duomenys is failo:" << endl;
 	int ilgis = 0;
 	for (int i = 0; i < taisykles.size(); i++){
 		//atskirti_taisykle(taisykles[i]);
