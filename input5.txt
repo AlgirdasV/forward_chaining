@@ -1,7 +1,10 @@
+1) Taisyklės	//pvz., kur is kart aisku, kad tikslo pasiekti neimanoma 
 X F B             //koment
 F C D			//koment
 D A
 
+2) Faktai
 A B C		//koment
 
+3) Tikslas
 Z			//koment

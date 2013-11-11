@@ -7,39 +7,49 @@
 	using namespace std;
 #include <algorithm>
 
-vector<char> faktai;
-vector<char> objektai;
+vector<char> faktai;//pradiniai faktai
+vector<char> objektai;//objektai(faktai) algoritmo vykdymo metu
 string tikslas;
 vector<string> taisykles;
-vector <int> panaudotos_produkcijos;
+vector <int> panaudotos_produkcijos;//panaudotu produkciju numeriai
 
-void rasti_kelia(){
-	bool tikslas_pasiektas = false;
-	bool issemtos_produkcijos = false;
+void forward_chaining(){//pagrindine funkcija, iesko plano, spausdina rezultatus
+	int zingsniu_kiekis = 0;//kiek zingsniu padaryta
+	bool tikslas_pasiektas = false;//veliava, zymi ar tikslas jau pasiektas
+	bool issemtos_produkcijos = false;//veliava, zymi ar jau issemtos produkcijos
 	cout << "2)Vykdymo zingsniai\n";
-	if (ar_tikslas_pasiektas()){
+	if (ar_tikslas_pasiektas()){//galbut tikslas jau egzistuoja tarp faktu
 		cout << "\n3)Rezultatas\n";
 		cout << "      Tikslas "<< tikslas[0]<<" pasiektas; ";
 		spausdinti_plana();
 	}
 	else {
 		if ( tikslas_pasiekiamas() ){
-			objektai = faktai;
+			objektai = faktai;		//nukopijuojame pradinus faktus i objektu aibe 
 			bool produkcija_ivykdoma;
 			bool ivykdyta;
 			int kiekis_ivykdytu = 0;
-			int x = 0;
-			while (!tikslas_pasiektas && !issemtos_produkcijos){
-				cout << "  "<< x+1<< " iteracija.\n";
+			int iteracijos_nr = 0;
+			while (!tikslas_pasiektas && !issemtos_produkcijos){	//pagrindinis ciklas, kuris vykdo iteracijas 
+																														//t.y. bando produkcijas is eiles
+				cout << "\n  "<< iteracijos_nr+1<< " iteracija.\n";								
 				ivykdyta = false;
 				for (int i = 0; i < taisykles.size() && !ivykdyta; i++ ) {
 					produkcija_ivykdoma = true;
-					if ( std::find(panaudotos_produkcijos.begin(), panaudotos_produkcijos.end(), i)!=panaudotos_produkcijos.end() )
+					if ( std::find(panaudotos_produkcijos.begin(),		//ar produkcija yra tarp panaudotu produkciju
+						panaudotos_produkcijos.end(), i)!=panaudotos_produkcijos.end() )
 						cout << "      Produkcija R"<< i+1<<" jau panaudota\n";
 					else {
 						for (int j = 1;  j < taisykles[i].size()  ; j++ ) {
-							if ( std::find(objektai.begin(), objektai.end(), taisykles[i][j])==objektai.end() ){
-								cout << "      Nerastas objektas " << taisykles[i][j] <<"; ";
+							if ( std::find(objektai.begin(), objektai.end(),		//ar turime faktus, reikalingus produkcijai vykdyti
+								taisykles[i][j])==objektai.end() ){
+								cout << "      Neturime fakto " << taisykles[i][j] <<"; ";
+								cout << "Produkcija R"<< i+1<<" nevykdoma\n";
+								produkcija_ivykdoma = false;
+							}
+							if ( std::find(faktai.begin(), faktai.end(),		//ar produkcijos gaminamas faktas nera turimas
+							 taisykles[i][0])!=faktai.end() ){
+								cout << "      Faktas "<< taisykles[i][0]<<" jau turimas; ";
 								cout << "Produkcija R"<< i+1<<" nevykdoma\n";
 								produkcija_ivykdoma = false;
 							}
@@ -48,32 +58,35 @@ void rasti_kelia(){
 							kiekis_ivykdytu++;
 							vykdyti_produkcija(i, ivykdyta);
 							spausdinti_busena();
-							if ( taisykles[i][0] == tikslas[0]){
+							if ( taisykles[i][0] == tikslas[0]){		//ar pasiektas tikslas
 								cout << "\n3)Rezultatas\n";
 								cout << "      Tikslas "<< tikslas[0]<<" pasiektas; ";
 								tikslas_pasiektas = true;
 								spausdinti_plana();
 							}
-							else if (panaudotos_produkcijos.size() == taisykles.size()){
+							else if (panaudotos_produkcijos.size() == taisykles.size()){	//ar neisnaudojome visu produkciju
 								cout << "\n3)Rezultatas\n";
-								cout << "      Isnaudotos produkcijos. Tikslas "<< tikslas[0]<<" nepasiekiamas\n";
+								cout << "      Isnaudotos produkcijos. Tikslas "<<
+									tikslas[0]<<" nepasiekiamas\n";
 								issemtos_produkcijos = true;
 							}
 						}	
 					}
 				}//isbandzius visas produkcijas
-				if (kiekis_ivykdytu == 0){
+				if (kiekis_ivykdytu == 0){//ar iteracijos metu ivykdyta bent viena produkcija
 					issemtos_produkcijos = true;
 					cout << "\n3)Rezultatas\n";
-					cout << "      Neivykdoma ne viena produkcija. Tikslas "<< tikslas[0]<<" nepasiekiamas\n";
+					cout << "      Neivykdoma ne viena produkcija. Tikslas "<<
+						tikslas[0]<<" nepasiekiamas\n";
 				}
-				x++;
+				iteracijos_nr++;
 			}
 		}
 	}
 }
 
-void spausdinti_busena(){
+void spausdinti_busena(){//spausdina tam tikro zingsnio busena
+						//t.y. turimus objektus
 	cout << "Busena: {";
 	for (int i = 0; i < objektai.size(); i++) {
 		if (i == objektai.size()-1)
@@ -83,7 +96,7 @@ void spausdinti_busena(){
 	}
 	cout << "}\n";
 }
-void spausdinti_plana(){
+void spausdinti_plana(){//funkcija spausdina rasta plana
 	cout << "Planas: {";
 	for (int j = 0;  j < panaudotos_produkcijos.size() ; j++ ) {
 		if (j == panaudotos_produkcijos.size()-1)
@@ -93,13 +106,16 @@ void spausdinti_plana(){
 	}
 	cout << "}\n";
 }
-void vykdyti_produkcija(int nr, bool& ivykdyta){
+void vykdyti_produkcija(int nr, bool& ivykdyta){//funkcija, kuri ivykdo produkcija, pazymeta
+												//numeriu 'nr' ir pazymi ar produkcija buvo ivykdyta
+												//veliavoje 'ivykdyta'
 	cout << "      Produkcija R"<< nr+1<<" vykdoma; ";
 	objektai.push_back(taisykles[nr][0]);
 	ivykdyta = true;
 	panaudotos_produkcijos.push_back(nr);
 }
-bool ar_tikslas_pasiektas(){
+bool ar_tikslas_pasiektas(){//dar nepradejus algoritmo vykdymo tikrina
+							//ar tikslas jau egzistuoja tarp faktu
 	bool pasiektas = false;
 	for (int i = 0; i < faktai.size(); i++) {
 		if ( faktai[i] == tikslas[0])
@@ -107,7 +123,8 @@ bool ar_tikslas_pasiektas(){
 	}
 	return pasiektas;
 }
-bool tikslas_pasiekiamas(){
+bool tikslas_pasiekiamas(){//tikrina ar tikslas pasiekiamas
+						//t.y. ar jis egzistuoja tarp produkciju desiniu pusiu
 	bool imanoma = false;
 	for (int i = 0; i < taisykles.size(); i++) {
 		for (int j = 0; j < taisykles[i].size(); j++) {

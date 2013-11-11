@@ -1,4 +1,7 @@
+1) Taisyklės	//pvz., be produkciju
 
+2) Faktai
 A B C
 
+3) Tikslas
 C

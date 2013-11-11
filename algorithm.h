@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-void rasti_kelia();
+void forward_chaining();
 bool tikslas_pasiekiamas();
 void vykdyti_produkcija(int, bool& );
 bool ar_tikslas_pasiektas();

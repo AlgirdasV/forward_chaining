@@ -1,8 +1,8 @@
 OBJS = main.o algorithm.o
-CC = g++
+CC = gcc
 
 isvedimas: $(OBJS)
-	$(CC) $(OBJS) -o isvedimas
+	$(CC) $(OBJS) -o isvedimas -lstdc++
 main.o: main.cpp 
 	$(CC) -g -c main.cpp
 algorithm.o: algorithm.cpp 
