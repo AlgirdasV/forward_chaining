@@ -31,7 +31,7 @@ void forward_chaining(){//pagrindine funkcija, iesko plano, spausdina rezultatus
 			int kiekis_ivykdytu = 0;
 			int iteracijos_nr = 0;
 			while (!tikslas_pasiektas && !issemtos_produkcijos){	//pagrindinis ciklas, kuris vykdo iteracijas 
-																														//t.y. bando produkcijas is eiles
+																					//t.y. bando produkcijas is eiles
 				cout << "\n  "<< iteracijos_nr+1<< " iteracija.\n";								
 				ivykdyta = false;
 				for (int i = 0; i < taisykles.size() && !ivykdyta; i++ ) {
@@ -41,8 +41,8 @@ void forward_chaining(){//pagrindine funkcija, iesko plano, spausdina rezultatus
 						cout << "      Produkcija R"<< i+1<<" jau panaudota\n";
 					else {
 						for (int j = 1;  j < taisykles[i].size()  ; j++ ) {
-							if ( std::find(objektai.begin(), objektai.end(),		//ar turime faktus, reikalingus produkcijai vykdyti
-								taisykles[i][j])==objektai.end() ){
+							if ( std::find(objektai.begin(), objektai.end(),		//ar turime faktus,
+								taisykles[i][j])==objektai.end() ){						//reikalingus produkcijai vykdyti
 								cout << "      Neturime fakto " << taisykles[i][j] <<"; ";
 								cout << "Produkcija R"<< i+1<<" nevykdoma\n";
 								produkcija_ivykdoma = false;
@@ -86,7 +86,7 @@ void forward_chaining(){//pagrindine funkcija, iesko plano, spausdina rezultatus
 }
 
 void spausdinti_busena(){//spausdina tam tikro zingsnio busena
-						//t.y. turimus objektus
+												 //t.y. turimus objektus
 	cout << "Busena: {";
 	for (int i = 0; i < objektai.size(); i++) {
 		if (i == objektai.size()-1)
@@ -115,7 +115,7 @@ void vykdyti_produkcija(int nr, bool& ivykdyta){//funkcija, kuri ivykdo produkci
 	panaudotos_produkcijos.push_back(nr);
 }
 bool ar_tikslas_pasiektas(){//dar nepradejus algoritmo vykdymo tikrina
-							//ar tikslas jau egzistuoja tarp faktu
+														//ar tikslas jau egzistuoja tarp faktu
 	bool pasiektas = false;
 	for (int i = 0; i < faktai.size(); i++) {
 		if ( faktai[i] == tikslas[0])
@@ -124,7 +124,7 @@ bool ar_tikslas_pasiektas(){//dar nepradejus algoritmo vykdymo tikrina
 	return pasiektas;
 }
 bool tikslas_pasiekiamas(){//tikrina ar tikslas pasiekiamas
-						//t.y. ar jis egzistuoja tarp produkciju desiniu pusiu
+													 //t.y. ar jis egzistuoja tarp produkciju desiniu pusiu
 	bool imanoma = false;
 	for (int i = 0; i < taisykles.size(); i++) {
 		for (int j = 0; j < taisykles[i].size(); j++) {
